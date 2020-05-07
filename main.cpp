@@ -12,7 +12,7 @@ vector<vector<float>> readInput(char *fileName) {
 
     vector<vector<float>> allElems;
     vector<float> newElem;
-    char line[3000];
+    char line[2000];
 
     while (fscanf(INPUT, "%[^\n]\n", line) != EOF) {
         char * floatNumberAsString = strtok(line, " \n");
@@ -168,18 +168,7 @@ int * reassignElements(int * labels, vector<pair<int, int>> elems) {
     return labels;
 }
 
-int main() {
-    int desiredNumOfClusters;
-    printf("How many clusters should the final clustering have? ");
-    scanf("%d", &desiredNumOfClusters);
-
-    // elems[i][j] is the j-th feature of the i-th object.
-    vector<vector<float>> elems = readInput("input.txt");
-    int numOfObjects = elems.size();
-
-    // distances[i][j] is the distance between the i-th and j-th element. 
-    float ** distances = makeDistanceMatrix(elems);
-
+int * kmeans(int numOfObjects, int desiredNumOfClusters, float ** distances) {
     // elemLabel[i] is the cluster where the i-th element belongs.
     int * labels = makeRandomClustering(numOfObjects, desiredNumOfClusters);
 
@@ -197,9 +186,60 @@ int main() {
         labels = reassignElements(labels, changingElems);
     }
 
-    for (int i = 0; i < numOfObjects; i++) {
-        printf("%d: %d\n", i, labels[i]);
+    return labels;
+}
+
+FILE * openOutputFile(int numOfClusters, char * fileNamePrefix) {
+    char outputFileName[100];
+
+    sprintf(outputFileName, "%s_%d.txt", fileNamePrefix, numOfClusters);
+    
+    FILE * OUTPUT = fopen(outputFileName, "w");
+    
+    return OUTPUT;
+}
+
+void writeOutput(int * clustering, int numOfObjects, char * outputFileName, int numOfClusters) {
+    FILE * OUTPUT = openOutputFile(numOfClusters, outputFileName);
+
+    for (int i = 0; i < numOfObjects - 1; i++) {
+        fprintf(OUTPUT, "%d ", clustering[i]);
     }
 
+    fprintf(OUTPUT, "%d\n", clustering[numOfObjects - 1]);
+}
+
+int main() {
+    char inputFileName[100];
+    printf("What is the input file path? ");
+    scanf("%s", inputFileName);
+
+    // Pass file name with no extension. 
+    // Ex: segmentation.txt WRONG!! >:(
+    // Ex: segmentation_data NICE :D
+    char outputFileName[100]; 
+    printf("What should be the output file path? ");
+    scanf("%s", outputFileName);
+
+    // elems[i][j] is the j-th feature of the i-th object.
+    printf("Reading input file...\n");
+    vector<vector<float>> elems = readInput(inputFileName);
+    int numOfObjects = elems.size();
+
+    // distances[i][j] is the distance between the i-th and j-th element. 
+    printf("Calculating distances between objects...\n\n");
+    float ** distances = makeDistanceMatrix(elems);
+
+    // Number of clusters that we are going to pass as an argument to K-means.
+    int numOfClusters[] = { 5, 10, 15, 20, 30 }; 
+
+    for (int i = 0; i < 5; i++) {
+        printf("Running K-Means with k = %d...\n", numOfClusters[i]);
+        int * clustering = kmeans(numOfObjects, numOfClusters[i], distances);
+        writeOutput(clustering, numOfObjects, outputFileName, numOfClusters[i]);
+        printf("Done!\n\n");
+    }
+
+    printf("Done all tasks.\n");
     return 0;
 }
