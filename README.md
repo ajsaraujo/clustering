@@ -16,9 +16,9 @@ literature and also for it's simplicity. Besides the dataset, the desired num of
 
 1. Choose k random objects as centroids for each cluster. 
 2. Repeat:
-    2.1 Assign each object to it's closest cluster (use centroid for comparison). 
-    2.2 Recalculate the centroid for each cluster.
-    2.2 If no objects were reassigned, stop. 
+     1. Assign each object to it's closest cluster (use centroid for comparison). 
+     2. Recalculate the centroid for each cluster.
+     3. If no objects were reassigned, stop. 
     
 One curiosity about K-Means is that since it uses the Euclidian Distance to calculate similarity between objects, it tends to
 create "circular" clusters. This can be easily noted when you visualize data in a 2D plan. 
