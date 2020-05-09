@@ -185,6 +185,41 @@ vector<vector<float>> pickRandomCentroids(vector<vector<float>> objects, int num
     return centroids;
 }
 
+vector<vector<float>> computeCentroids(int * labels, vector<vector<float>> objects, int numOfClusters) {
+    // This assumes every object has the same number of features.
+    int numOfFeatures = objects[0].size();
+    
+    // A vector filled with 0s. 
+    vector<float> emptyCentroid(numOfFeatures, 0.0);
+    
+    // centroids[i] will be the centroid for the i-th cluster.
+    vector<vector<float>> centroids(numOfClusters, emptyCentroid);
+
+    // objectsInCluster[i] is the number of objects in the i-th cluster.
+    int * objectsInCluster = (int*) calloc(numOfClusters, sizeof(int));
+
+    int numOfObjects = objects.size();
+
+    // Sum all values.
+    for (int i = 0; i < numOfObjects; i++) {
+        int cluster = labels[i];
+        objectsInCluster[cluster]++;
+
+        for (int j = 0; j < objects[i].size(); j++) {
+            centroids[cluster][j] += objects[i][j];
+        }
+    }
+
+    // Divide them to obtain the mean.
+    for (int i = 0; i < numOfClusters; i++) {
+        for (int j = 0; j < centroids[i].size(); j++) {
+            centroids[i][j] /= objectsInCluster[i];
+        }
+    }
+
+    return centroids;
+}
+
 int * kmeans(int numOfClusters, vector<vector<float>> objects) {
     int numOfObjects = objects.size();
     
@@ -200,6 +235,8 @@ int * kmeans(int numOfClusters, vector<vector<float>> objects) {
         if (objectsToReassign.size() == 0) break;
 
         labels = reassignElements(labels, objectsToReassign);
+
+        centroids = computeCentroids(labels, objects, numOfClusters);
     }
 
     return labels; 
