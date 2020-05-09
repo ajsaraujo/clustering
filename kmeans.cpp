@@ -33,12 +33,7 @@ vector<vector<float>> readInput(char *fileName) {
 int * makeRandomClustering(int numOfObjects, int numOfClusters) {
     int * labels = (int*) malloc(numOfObjects * sizeof(int));
 
-    // Ensures that each cluster has at least one object.
-    for (int i = 0; i < numOfClusters; i++) {
-        labels[i] = i;
-    }
-
-    for (int i = numOfClusters; i < numOfObjects; i++) {
+    for (int i = 0; i < numOfObjects; i++) {
         // Assign the i-th object to a random cluster.
         labels[i] = rand() % numOfClusters;
     }
@@ -168,14 +163,33 @@ int * reassignElements(int * labels, vector<pair<int, int>> elems) {
     return labels;
 }
 
-int * kmeans(int numOfObjects, int desiredNumOfClusters, float ** distances) {
+vector<vector<float>> pickRandomCentroids(vector<vector<float>> objects, int numOfClusters) {
+    vector<vector<float>> centroids;
+
+    int numOfObjects = objects.size();
+
+    // wasPicked[i] is true if the i-th object was picked as a centroid.
+    bool * wasPicked = (bool*) calloc(numOfObjects, sizeof(bool));
+
+    while (centroids.size() < numOfClusters) {
+        int i = rand() % numOfObjects;
+
+        if (wasPicked[i]) continue; 
+
+        wasPicked[i] = true;
+        centroids.push_back(objects[i]);
+    }
+
+    return centroids;
+}
+
+int * kmeans(int numOfClusters, vector<vector<float>> objects) {
+    int numOfObjects = objects.size();
+    
     // elemLabel[i] is the cluster where the i-th element belongs.
-    int * labels = makeRandomClustering(numOfObjects, desiredNumOfClusters);
+    int * labels = makeRandomClustering(numOfObjects, numOfClusters);
 
-    // centers[i] is the center of the i-th cluster.
-    int * centers = calculateAllCenters(desiredNumOfClusters, labels, numOfObjects, distances);
-
-    bool elementsWereReassigned = true;
+    vector<vector<float>> centroids = pickRandomCentroids(objects, numOfClusters);
 
     while (true) {
         vector<pair<int, int>> changingElems = elementsThatMustBeReassigned(numOfObjects, centers, desiredNumOfClusters, labels, distances);
@@ -186,7 +200,7 @@ int * kmeans(int numOfObjects, int desiredNumOfClusters, float ** distances) {
         labels = reassignElements(labels, changingElems);
     }
 
-    return labels;
+    return labels; 
 }
 
 FILE * openOutputFile(int numOfClusters, char * fileNamePrefix) {
@@ -226,19 +240,16 @@ int main() {
     vector<vector<float>> elems = readInput(inputFileName);
     int numOfObjects = elems.size();
 
-    // distances[i][j] is the distance between the i-th and j-th element. 
-    printf("Calculating distances between objects...\n\n");
-    float ** distances = makeDistanceMatrix(elems);
-
     // Number of clusters that we are going to pass as an argument to K-means.
     int numOfClusters[] = { 5, 10, 15, 20, 30 }; 
 
-    for (int i = 0; i < 5; i++) {
+    kmeans(5, elems);
+    /*for (int i = 0; i < 5; i++) {
         printf("Running K-Means with k = %d...\n", numOfClusters[i]);
         int * clustering = kmeans(numOfObjects, numOfClusters[i], distances);
         writeOutput(clustering, numOfObjects, outputFileName, numOfClusters[i]);
         printf("Done!\n\n");
-    }
+    }*/
 
     printf("Done all tasks.\n");
     return 0;
