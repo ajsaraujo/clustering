@@ -120,13 +120,13 @@ int * calculateAllCenters(int numOfClusters, int * labels, int numOfElems, float
     return centers;
 }
 
-int findClosestCluster(int elem, int * centers, int numOfClusters, int * labels, float ** distanceMatrix) {
-    int closestCluster = labels[elem];
-    float smallestDistance = distanceMatrix[elem][centers[closestCluster]];
+int findClosestCluster(vector<float> object, vector<vector<float>> centroids) {
+    int closestCluster = 0;
+    float smallestDistance = euclidianDistance(object, centroids[0]);
 
+    int numOfClusters = centroids.size();
     for (int i = 0; i < numOfClusters; i++) {
-        int clusterCenter = centers[i];
-        float distance = distanceMatrix[elem][clusterCenter];
+        float distance = euclidianDistance(object, centroids[i]);
 
         if (distance < smallestDistance) {
             closestCluster = i;
@@ -137,20 +137,22 @@ int findClosestCluster(int elem, int * centers, int numOfClusters, int * labels,
     return closestCluster; 
 }
 
-vector<pair<int, int>> elementsThatMustBeReassigned(int numOfObjects, int * centers, int desiredNumOfClusters, int * labels, float ** distances) {
+vector<pair<int, int>> objectsInTheWrongCluster(int * labels, vector<vector<float>> centroids, vector<vector<float>> objects) {
     // elems[i].first is the elem to be reassigned.
     // elems[i].second is the element's new cluster.
-    vector<pair<int, int>> elems; 
+    vector<pair<int, int>> toReassign; 
+
+    int numOfObjects = objects.size();
 
     for (int i = 0; i < numOfObjects; i++) {
-        int closestCluster = findClosestCluster(i, centers, desiredNumOfClusters, labels, distances);
-            
+        int closestCluster = findClosestCluster(objects[i], centroids);
+
         if (closestCluster != labels[i]) {
-            elems.push_back({i, closestCluster});
+            toReassign.push_back({i, closestCluster});
         }
     }
 
-    return elems;
+    return toReassign;
 }
 
 int * reassignElements(int * labels, vector<pair<int, int>> elems) {
@@ -192,12 +194,12 @@ int * kmeans(int numOfClusters, vector<vector<float>> objects) {
     vector<vector<float>> centroids = pickRandomCentroids(objects, numOfClusters);
 
     while (true) {
-        vector<pair<int, int>> changingElems = elementsThatMustBeReassigned(numOfObjects, centers, desiredNumOfClusters, labels, distances);
+        vector<pair<int, int>> objectsToReassign = objectsInTheWrongCluster(labels, centroids, objects);
         
         // No element must be reassigned => our job is done. 
-        if (changingElems.size() == 0) break;
+        if (objectsToReassign.size() == 0) break;
 
-        labels = reassignElements(labels, changingElems);
+        labels = reassignElements(labels, objectsToReassign);
     }
 
     return labels; 
