@@ -52,18 +52,6 @@ float euclidianDistance(vector<float> elemA, vector<float> elemB) {
     return sqrt(sum);
 }
 
-// Sum of distances from centroidCandidate to all elements in cluster.
-float distanceToClusterElems(int centroidCandidate, vector<int> cluster, float ** distanceMatrix) {
-    float distance = 0;
-
-    for (int u : cluster) {
-        if (u == centroidCandidate) continue;
-        distance += distanceMatrix[centroidCandidate][u];
-    }
-
-    return distance;
-}
-
 int findClosestCluster(vector<float> object, vector<vector<float>> centroids) {
     int closestCluster = 0;
     float smallestDistance = euclidianDistance(object, centroids[0]);
