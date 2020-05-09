@@ -52,26 +52,6 @@ float euclidianDistance(vector<float> elemA, vector<float> elemB) {
     return sqrt(sum);
 }
 
-// Calculate distance between all pairs of objects.
-float ** makeDistanceMatrix(vector<vector<float>> allElems) {
-    int numOfElems = allElems.size(); 
-    float ** matrix = (float**) malloc(numOfElems * sizeof(float*));
-
-    for (int i = 0; i < numOfElems; i++) {
-        matrix[i] = (float*) malloc(numOfElems * sizeof(float));
-    }
-
-    for (int i = 0; i < numOfElems; i++) {
-        for (int j = i + 1; j < numOfElems; j++) {
-            float dist = euclidianDistance(allElems[i], allElems[j]);
-            matrix[i][j] = dist;
-            matrix[j][i] = dist;
-        }
-    }
-
-    return matrix;
-};
-
 // Sum of distances from centroidCandidate to all elements in cluster.
 float distanceToClusterElems(int centroidCandidate, vector<int> cluster, float ** distanceMatrix) {
     float distance = 0;
@@ -82,42 +62,6 @@ float distanceToClusterElems(int centroidCandidate, vector<int> cluster, float *
     }
 
     return distance;
-}
-
-int calculateCenter(vector<int> cluster, float ** distanceMatrix) {
-    float minimalDistance = distanceToClusterElems(cluster[0], cluster, distanceMatrix);
-    int centroidCandidate = cluster[0];
-
-    for (int i = 1; i < cluster.size(); i++) {
-        float distance = distanceToClusterElems(i, cluster, distanceMatrix);
-
-        if (distance < minimalDistance) {
-            minimalDistance = distance;
-            centroidCandidate = i;
-        }
-    }
-
-    return centroidCandidate;
-}
-
-int * calculateAllCenters(int numOfClusters, int * labels, int numOfElems, float ** distanceMatrix) {
-
-    // clusterElements[i] is the list of elements that belong to the i-th cluster.
-    vector<vector<int>> clusterElements(numOfClusters);
-
-    for (int i = 0; i < numOfElems; i++) {
-        int clusterLabel = labels[i];
-        clusterElements[clusterLabel].push_back(i);
-    }
-
-    // centers[i] is the cluster center of the i-th cluster.
-    int * centers = (int*) malloc(numOfClusters * sizeof(int));
-    
-    for (int i = 0; i < numOfClusters; i++) {
-        centers[i] = calculateCenter(clusterElements[i], distanceMatrix);
-    }
-
-    return centers;
 }
 
 int findClosestCluster(vector<float> object, vector<vector<float>> centroids) {
@@ -186,13 +130,15 @@ vector<vector<float>> pickRandomCentroids(vector<vector<float>> objects, int num
 }
 
 vector<vector<float>> computeCentroids(int * labels, vector<vector<float>> objects, int numOfClusters) {
-    // This assumes every object has the same number of features.
     int numOfFeatures = objects[0].size();
-    
-    // A vector filled with 0s. 
-    vector<float> emptyCentroid(numOfFeatures, 0.0);
-    
-    // centroids[i] will be the centroid for the i-th cluster.
+
+    for (int i = 1; i < objects.size(); i++) {
+        if (objects[i].size() > numOfFeatures) {
+            numOfFeatures = objects[i].size();
+        }
+    }    
+
+    vector<float> emptyCentroid(numOfFeatures, 0.0);    
     vector<vector<float>> centroids(numOfClusters, emptyCentroid);
 
     // objectsInCluster[i] is the number of objects in the i-th cluster.
@@ -221,6 +167,7 @@ vector<vector<float>> computeCentroids(int * labels, vector<vector<float>> objec
 }
 
 int * kmeans(int numOfClusters, vector<vector<float>> objects) {
+    printf("entrei!");
     int numOfObjects = objects.size();
     
     // elemLabel[i] is the cluster where the i-th element belongs.
@@ -282,14 +229,13 @@ int main() {
     // Number of clusters that we are going to pass as an argument to K-means.
     int numOfClusters[] = { 5, 10, 15, 20, 30 }; 
 
-    kmeans(5, elems);
-    /*for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         printf("Running K-Means with k = %d...\n", numOfClusters[i]);
-        int * clustering = kmeans(numOfObjects, numOfClusters[i], distances);
+        int * clustering = kmeans(numOfClusters[i], elems);
         writeOutput(clustering, numOfObjects, outputFileName, numOfClusters[i]);
         printf("Done!\n\n");
-    }*/
+    }
 
-    printf("Done all tasks.\n");
+    printf("All tasks done.\n");
     return 0;
 }
