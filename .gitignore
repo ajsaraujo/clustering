@@ -1,2 +1,7 @@
 # Ignore binaries
 *.out
+
+# Ignore input files
+*.txt
+*.data
+
