@@ -167,7 +167,6 @@ vector<vector<float>> computeCentroids(int * labels, vector<vector<float>> objec
 }
 
 int * kmeans(int numOfClusters, vector<vector<float>> objects) {
-    printf("entrei!");
     int numOfObjects = objects.size();
     
     // elemLabel[i] is the cluster where the i-th element belongs.
