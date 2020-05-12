@@ -5,30 +5,9 @@
 #include <cstdlib>
 #include <cmath>
 
+#include "utils.h"
+
 using namespace std;
-
-vector<vector<float>> readInput(char *fileName) {
-    FILE *INPUT = fopen(fileName, "r");
-
-    vector<vector<float>> allElems;
-    vector<float> newElem;
-    char line[2000];
-
-    while (fscanf(INPUT, "%[^\n]\n", line) != EOF) {
-        char * floatNumberAsString = strtok(line, " \n");
-        newElem.clear();
-
-        while (floatNumberAsString != NULL) {
-            float floatValue = atof(floatNumberAsString);
-            floatNumberAsString = strtok(NULL, " \n");
-            newElem.push_back(floatValue);
-        }
-
-        allElems.push_back(newElem);
-    }
-
-    return allElems;
-};
 
 int * makeRandomClustering(int numOfObjects, int numOfClusters) {
     int * labels = (int*) malloc(numOfObjects * sizeof(int));
@@ -39,17 +18,6 @@ int * makeRandomClustering(int numOfObjects, int numOfClusters) {
     }
 
     return labels;
-}
-
-// Distance between two objects.
-float euclidianDistance(vector<float> elemA, vector<float> elemB) {
-    float sum = 0.0;
-
-    for (int i = 0; i < elemA.size() && i < elemB.size(); i++) {
-        sum += pow(elemA[i] - elemB[i], 2);
-    }
-
-    return sqrt(sum);
 }
 
 int findClosestCluster(vector<float> object, vector<vector<float>> centroids) {
@@ -210,7 +178,7 @@ int main() {
 
     // elems[i][j] is the j-th feature of the i-th object.
     printf("Reading input file...\n");
-    vector<vector<float>> elems = readInput(inputFileName);
+    vector<vector<float>> elems = parseDataSet(inputFileName);
     int numOfObjects = elems.size();
 
     // Number of clusters that we are going to pass as an argument to K-means.
