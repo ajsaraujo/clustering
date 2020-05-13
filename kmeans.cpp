@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <cstring>
-#include <stdlib.h>
-#include <vector>
 #include <cstdlib>
-#include <cmath>
-
 #include "utils.h"
 
 using namespace std;
