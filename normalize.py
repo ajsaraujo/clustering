@@ -1,5 +1,7 @@
 import os
 
+from utils import getMatrixFromFile
+
 def getMinAndMax(matrix):
     allMins = [min(line) for line in matrix]
     allMaxes = [max(line) for line in matrix]
@@ -21,18 +23,6 @@ def normalizeMatrix(matrix):
             matrix[i][j] = normalizeValue(value, smallestValue, diff)
 
     return matrix
-
-def getMatrixFromFile(fileName):
-    with open(fileName, 'r') as file:
-        rawData = file.read().split('\n')
-        
-        # Remove whitespaces
-        stringMatrix = [ elem.split(' ') for elem in rawData if elem != '']
-        
-        # Cast to float        
-        floatMatrix = [[float(elem) for elem in line if elem != ''] for line in stringMatrix]
-
-    return floatMatrix
 
 def matrixToString(matrix):
     for i, line in enumerate(matrix):
