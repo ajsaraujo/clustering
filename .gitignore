@@ -1,7 +1,8 @@
-# Ignore binaries
+# Ignore binaries and bytecode
+*.pyo
+*.pyc
 *.out
 
 # Ignore input files
 *.txt
 *.data
-
