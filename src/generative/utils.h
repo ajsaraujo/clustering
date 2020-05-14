@@ -18,5 +18,7 @@ vector<int> parseClustering(char * filePath);
 vector<vector<float>> parseDataSet(char * fileName);
 float euclidianDistance(vector<float> elemA, vector<float> elemB);
 DatasetAndFileName welcomeUserAndLoadData();
+FILE * openOutputFile(int numOfClusters, char * fileNamePrefix);
+void writeOutput(int * clustering, int numOfObjects, char * outputFileName, int numOfClusters);
 
 #endif 

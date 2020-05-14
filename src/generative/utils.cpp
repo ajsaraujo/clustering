@@ -83,3 +83,23 @@ float euclidianDistance(vector<float> elemA, vector<float> elemB) {
 
     return sqrt(sum);
 }
+
+FILE * openOutputFile(int numOfClusters, char * fileNamePrefix) {
+    char outputFileName[100];
+
+    sprintf(outputFileName, "%s_%d.txt", fileNamePrefix, numOfClusters);
+    
+    FILE * OUTPUT = fopen(outputFileName, "w");
+    
+    return OUTPUT;
+}
+
+void writeOutput(int * clustering, int numOfObjects, char * outputFileName, int numOfClusters) {
+    FILE * OUTPUT = openOutputFile(numOfClusters, outputFileName);
+
+    for (int i = 0; i < numOfObjects - 1; i++) {
+        fprintf(OUTPUT, "%d ", clustering[i]);
+    }
+
+    fprintf(OUTPUT, "%d\n", clustering[numOfObjects - 1]);
+}
