@@ -2,6 +2,8 @@
 *.pyo
 *.pyc
 *.out
+*.o
+*_out
 
 # Ignore input files
 *.txt
