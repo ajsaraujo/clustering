@@ -47,6 +47,32 @@ vector<vector<float>> parseDataSet(char *fileName) {
     return allElems;
 };
 
+DatasetAndFileName welcomeUserAndLoadData() {
+    char inputFileName[100], outputFileName[100];
+
+    printf("Hello!\n\n"); 
+
+    printf("What is the input file path? ");
+    scanf("%s", inputFileName);
+
+    // elems[i][j] is the j-th feature of the i-th object.
+    printf("Reading input file...\n");
+    vector<vector<float>> dataset = parseDataSet(inputFileName);
+    printf("done!\n\n");
+
+    // Pass file name with no extension. 
+    // Ex: segmentation.txt WRONG!! >:(
+    // Ex: segmentation_data NICE :D
+    printf("What should be the output file path? ");
+    scanf("%s", outputFileName);
+
+    DatasetAndFileName output; 
+    output.dataset = dataset;
+    strcpy(output.fileName, outputFileName);
+    
+    return output;
+}
+
 // Distance between two objects.
 float euclidianDistance(vector<float> elemA, vector<float> elemB) {
     float sum = 0.0;

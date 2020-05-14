@@ -159,22 +159,14 @@ void writeOutput(int * clustering, int numOfObjects, char * outputFileName, int 
 }
 
 int main() {
-    char inputFileName[100];
-    printf("What is the input file path? ");
-    scanf("%s", inputFileName);
+    DatasetAndFileName input = welcomeUserAndLoadData();
 
-    // Pass file name with no extension. 
-    // Ex: segmentation.txt WRONG!! >:(
-    // Ex: segmentation_data NICE :D
-    char outputFileName[100]; 
-    printf("What should be the output file path? ");
-    scanf("%s", outputFileName);
-
-    // elems[i][j] is the j-th feature of the i-th object.
-    printf("Reading input file...\n");
-    vector<vector<float>> elems = parseDataSet(inputFileName);
+    vector<vector<float>> elems = input.dataset;
     int numOfObjects = elems.size();
 
+    char outputFileName[100];
+    strcpy(outputFileName, input.fileName);
+        
     // Number of clusters that we are going to pass as an argument to K-means.
     int numOfClusters[] = { 5, 10, 15, 20, 30 }; 
 
