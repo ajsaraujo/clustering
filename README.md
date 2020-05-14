@@ -1,14 +1,22 @@
 # clustering
 
-Clustering is the problem of partitioning a dataset in several clusters, in a way that objects in the same cluster are similar, while objects in different clusters aren't. This can be defined more formally with objective functions. Of course, a deterministic way of comparing objects in the dataset should be provided. Most algorithms are based on euclidian distance, but 
-other techniques can be used. Clustering is a relevant problem in several applications, such as marketing segmentation, image recognition and data compression. 
+Clustering is the problem of partitioning a dataset in several clusters, in a way that objects in the same cluster are similar, while objects in different clusters aren't. Clustering algorithms are widely used to calssify data and are extremely
+relevant  problem in several applications, such as marketing segmentation, image recognition and data compression.  
 
-Several clustering algorithms can be found in the literature, each with it's own traits. They may have different objective functions, produce different clusterings, take different parameters or perform differently when facing noise or outliers. In general, no algorithm suits all cases, but each has it's own strengths and weaknessess, being up to the user to choose the most suitable for his application. 
+## Installation and usage 
 
-## K-Means algorithm 
+To compile the project, you'll need G++.
 
-K-Means is one of the most popular clustering algorithms, much probably for being one of the first algorithms proposed in the
-literature and also for it's simplicity. Besides the dataset, the desired num of clusters K shall be provided. 
+1. At `generative/`, run `make kmeans_out` to build `kmeans.cpp` and it's dependencies.
+2. Execute the program with `./kmeans.out` if you're on Linux. 
+3. You will be prompted for input and output file paths. The input file should contain a matrix representing the dataset, with columns being separated by whitespaces and lines being separated by linefeeds. The output path can be whatever you want, it will just be the prefix for the output files. 
+4. The program will produce files containing clusterings with 5, 10, 15, 20 and 30 clusters each. If you want to modify the number of clusters in each run you just have to update the `numOfClusters[]` array in `kmeans.cpp`. 
+
+## Algorithm descriptions 
+
+### K-Means algorithm 
+
+K-Means is one of the most popular clustering algorithms, much probably for being one of the first algorithms proposed in the literature and also for it's simplicity. Besides the dataset, the desired number of clusters (k) shall be provided. 
 
 1. Choose k random objects as centroids for each cluster. 
 2. Repeat:
