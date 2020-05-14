@@ -59,26 +59,6 @@ int * reassignElements(int * labels, vector<pair<int, int>> elems) {
     return labels;
 }
 
-vector<vector<float>> pickRandomCentroids(vector<vector<float>> objects, int numOfClusters) {
-    vector<vector<float>> centroids;
-
-    int numOfObjects = objects.size();
-
-    // wasPicked[i] is true if the i-th object was picked as a centroid.
-    bool * wasPicked = (bool*) calloc(numOfObjects, sizeof(bool));
-
-    while (centroids.size() < numOfClusters) {
-        int i = rand() % numOfObjects;
-
-        if (wasPicked[i]) continue; 
-
-        wasPicked[i] = true;
-        centroids.push_back(objects[i]);
-    }
-
-    return centroids;
-}
-
 vector<vector<float>> computeCentroids(int * labels, vector<vector<float>> objects, int numOfClusters) {
     int numOfFeatures = objects[0].size();
 

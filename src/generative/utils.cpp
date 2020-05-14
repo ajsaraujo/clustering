@@ -103,3 +103,23 @@ void writeOutput(int * clustering, int numOfObjects, char * outputFileName, int 
 
     fprintf(OUTPUT, "%d\n", clustering[numOfObjects - 1]);
 }
+
+vector<vector<float>> pickRandomCentroids(vector<vector<float>> objects, int numOfClusters) {
+    vector<vector<float>> centroids;
+
+    int numOfObjects = objects.size();
+
+    // wasPicked[i] is true if the i-th object was picked as a centroid.
+    bool * wasPicked = (bool*) calloc(numOfObjects, sizeof(bool));
+
+    while (centroids.size() < numOfClusters) {
+        int i = rand() % numOfObjects;
+
+        if (wasPicked[i]) continue; 
+
+        wasPicked[i] = true;
+        centroids.push_back(objects[i]);
+    }
+
+    return centroids;
+}

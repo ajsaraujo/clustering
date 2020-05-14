@@ -11,6 +11,7 @@ float * initializeWeightArray(int arraySize, float weight) {
 }
 
 int * twKmeans(int numOfClusters, int numOfViews, vector<vector<float>> objects) {
+    // Initialize variable and view weight arrays
     float initialViewWeight = 1.0 / numOfViews;
     float * viewWeight = initializeWeightArray(numOfViews, initialViewWeight);
 
@@ -19,7 +20,7 @@ int * twKmeans(int numOfClusters, int numOfViews, vector<vector<float>> objects)
     float initialVariableWeight = 1.0 / numOfVariables;
     float * variableWeight = initializeWeightArray(numOfVariables, initialVariableWeight);
 
-    
+    vector<vector<float>> centroids = pickRandomCentroids(objects, numOfClusters);
 }
 
 int main() {
@@ -37,10 +38,10 @@ int main() {
 
     for (int i = 0; i < numOfRuns; i++) {
         printf("Running TW-k-means with k = %d... ", numOfClusters[i]);
-        int * clustering = twKmeans(numOfClusters[i], elems);
+        //int * clustering = twKmeans(numOfClusters[i], elems);
         printf("done!\n");
         printf("Writing output to file... ");
-        writeOutput(clustering, numOfObjects, outputFileName, numOfClusters[i]);
+        //writeOutput(clustering, numOfObjects, outputFileName, numOfClusters[i]);
         printf("done!\n\n");
     }
 }

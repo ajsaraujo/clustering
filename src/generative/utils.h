@@ -20,5 +20,6 @@ float euclidianDistance(vector<float> elemA, vector<float> elemB);
 DatasetAndFileName welcomeUserAndLoadData();
 FILE * openOutputFile(int numOfClusters, char * fileNamePrefix);
 void writeOutput(int * clustering, int numOfObjects, char * outputFileName, int numOfClusters);
+vector<vector<float>> pickRandomCentroids(vector<vector<float>> objects, int numOfClusters);
 
 #endif 
