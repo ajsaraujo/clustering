@@ -1,6 +1,24 @@
 #include "utils.h"
 
-int * twKmeans(int numOfClusters, vector<vector<float>> objects) {
+float * initializeWeightArray(int arraySize, float weight) {
+    float * arr = (float*) calloc(arraySize, sizeof(float));
+
+    for (int i = 0; i < arraySize; i++) {
+        arr[i] = weight;
+    }
+
+    return arr;
+}
+
+int * twKmeans(int numOfClusters, int numOfViews, vector<vector<float>> objects) {
+    float initialViewWeight = 1.0 / numOfViews;
+    float * viewWeight = initializeWeightArray(numOfViews, initialViewWeight);
+
+    // This assumes every object has the exact same number of features.
+    int numOfVariables = objects[0].size();
+    float initialVariableWeight = 1.0 / numOfVariables;
+    float * variableWeight = initializeWeightArray(numOfVariables, initialVariableWeight);
+
     
 }
 
