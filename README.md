@@ -1,6 +1,6 @@
 # clustering
 
-Clustering is the problem of partitioning a dataset in several clusters, in a way that objects in the same cluster are similar, while objects in different clusters aren't. Clustering algorithms are widely used to calssify data and are extremely
+Clustering is the problem of partitioning a dataset in several clusters, in a way that objects in the same cluster are similar, while objects in different clusters aren't. Clustering algorithms are widely used to classify data and are extremely
 relevant  problem in several applications, such as marketing segmentation, image recognition and data compression.  
 
 ## Installation and usage 
