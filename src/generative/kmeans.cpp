@@ -127,13 +127,13 @@ int main() {
     char outputFileName[100];
     strcpy(outputFileName, input.fileName);
         
-    // Number of clusters that we are going to pass as an argument to K-means.
-    int numOfClusters[] = { 5, 10, 15, 20, 30 }; 
-
-    for (int i = 0; i < 5; i++) {
-        printf("Running K-Means with k = %d...\n", numOfClusters[i]);
-        int * clustering = kmeans(numOfClusters[i], elems);
-        writeOutput(clustering, numOfObjects, outputFileName, numOfClusters[i]);
+    // runs[i] is the number of clusters for the i-th run of k-means.
+    vector<int> runs = { 7, 10 };
+    
+    for (int numOfClusters : runs) {
+        printf("Running K-Means with k = %d...\n", numOfClusters);
+        int * clustering = kmeans(numOfClusters, elems);
+        writeOutput(clustering, numOfObjects, outputFileName, numOfClusters);
         printf("Done!\n\n");
     }
 
