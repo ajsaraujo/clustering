@@ -17,11 +17,16 @@ def parseFile(fileName):
         print('done!')
         return parsedFile
 
-inputFileName = input('What is the input file name? ')
-parsedFile = parseFile(inputFileName)
+suffixes = ['fac', 'fou', 'kar', 'mor', 'pix', 'zer']
 
-print(' > Writing output... ', end = '')
-outputFileName = inputFileName + '-parsed'
-with open(outputFileName, 'w') as outputFile:
-    outputFile.writelines(parsedFile)
-print('done!')
+for suffix in suffixes:
+    inputFileName = 'mfeat-' + suffix 
+    print(f'file: {inputFileName}')
+    
+    parsedFile = parseFile(inputFileName)
+    print(' > Writing output... ', end = '')
+    
+    outputFileName = inputFileName + '-parsed'
+    with open(outputFileName, 'w') as outputFile:
+        outputFile.writelines(parsedFile)
+    print('done!')
