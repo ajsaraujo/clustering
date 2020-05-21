@@ -29,7 +29,7 @@ vector<vector<float>> parseDataSet(char *fileName) {
 
     vector<vector<float>> allElems;
     vector<float> newElem;
-    char line[2000];
+    char line[5000];
 
     while (fscanf(INPUT, "%[^\n]\n", line) != EOF) {
         char * floatNumberAsString = strtok(line, " \n");
